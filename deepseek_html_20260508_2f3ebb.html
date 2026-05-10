@@ -1,512 +1,316 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="description" content="منصة خيرية لعرض بيانات المتبرعين للحالات الطارئة - بحث وتكريم العطاء" />
-  <title>صندوق مساعدة الحالات الطارئة | سجل العطاء</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>توقيع قانون صندوق محبران</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap');
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
 
-    body {
-      background: linear-gradient(145deg, #f5f3ef 0%, #e9e6df 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 28px 20px;
-      font-family: 'Segoe UI', 'Tajawal', 'Cairo', system-ui, -apple-system, sans-serif;
-    }
+        .law-item {
+            transition: all 0.3s ease;
+            border-right: 4px solid transparent;
+        }
 
-    /* الحاوية الرئيسية */
-    .emergency-card {
-      width: 100%;
-      max-width: 980px;
-      background: #ffffff;
-      border-radius: 44px;
-      box-shadow: 0 28px 48px -18px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.08);
-      overflow: hidden;
-      transition: transform 0.2s ease;
-      border: 1px solid rgba(200, 155, 60, 0.4);
-    }
+        .law-item:hover {
+            background-color: #f8fafc;
+            border-right-color: #3b82f6;
+        }
 
-    /* الهيدر - زخرفي وعاطفي */
-    .hero-section {
-      background: linear-gradient(135deg, #002642 0%, #0f3f5c 100%);
-      padding: 42px 28px 38px;
-      text-align: center;
-      position: relative;
-      color: white;
-      border-bottom: 6px solid #e4b363;
-    }
+        .law-item.active {
+            background-color: #f0f9ff;
+            border-right-color: #2563eb;
+        }
 
-    .hero-section::before {
-      content: "⚕️";
-      position: absolute;
-      right: 28px;
-      top: 28px;
-      font-size: 48px;
-      opacity: 0.3;
-    }
+        .custom-checkbox {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            accent-color: #2563eb;
+        }
 
-    .hero-section::after {
-      content: "🤝";
-      position: absolute;
-      left: 28px;
-      bottom: 20px;
-      font-size: 44px;
-      opacity: 0.25;
-    }
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+        }
 
-    .hero-section h1 {
-      font-size: 2.4rem;
-      margin-bottom: 12px;
-      letter-spacing: -0.5px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #fff, #ffecb3);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .hero-section p {
-      font-size: 1.2rem;
-      color: #f7e3af;
-      font-weight: 500;
-    }
-
-    .total-stats {
-      background: rgba(255, 255, 255, 0.12);
-      border-radius: 80px;
-      padding: 10px 24px;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 24px;
-      backdrop-filter: blur(4px);
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    .total-stats span {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #ffdf8c;
-    }
-
-    /* المحتوى الأساسي */
-    .main-content {
-      padding: 38px 32px 42px;
-      background: #ffffff;
-    }
-
-    /* شريط البحث أنيق */
-    .search-shamsiya {
-      margin-bottom: 32px;
-      background: #fefaf2;
-      padding: 16px 20px;
-      border-radius: 56px;
-      border: 1px solid #eeddbb;
-      transition: all 0.2s;
-    }
-
-    .search-shamsiya label {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #1f4e6e;
-      margin-bottom: 16px;
-    }
-
-    .search-shamsiya label i {
-      font-size: 1.8rem;
-    }
-
-    .input-group {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .input-group input {
-      flex: 1;
-      padding: 18px 22px;
-      border: 2px solid #e2cd9c;
-      border-radius: 58px;
-      font-size: 1.05rem;
-      background: white;
-      outline: none;
-      transition: all 0.25s;
-      font-family: inherit;
-      font-weight: 500;
-    }
-
-    .input-group input:focus {
-      border-color: #c98f2e;
-      box-shadow: 0 0 0 4px rgba(201, 143, 46, 0.2);
-    }
-
-    .input-group button {
-      background: linear-gradient(95deg, #1f5e7e, #0e3e58);
-      border: none;
-      padding: 0 32px;
-      border-radius: 58px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: white;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 6px 12px -8px rgba(0,0,0,0.3);
-    }
-
-    .input-group button:hover {
-      background: linear-gradient(95deg, #227c9c, #125073);
-      transform: scale(0.97);
-      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-    }
-
-    /* بطاقة النتيجة المبهرة */
-    .result-card {
-      background: linear-gradient(115deg, #fefcf7 0%, #fdf9f0 100%);
-      border-radius: 32px;
-      border-right: 7px solid #e4b363;
-      padding: 28px 28px;
-      margin-top: 12px;
-      box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
-    }
-
-    .result-title {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 1.7rem;
-      font-weight: 800;
-      color: #2c5a7a;
-      border-bottom: 2px dashed #e9d7b4;
-      padding-bottom: 15px;
-      margin-bottom: 20px;
-    }
-
-    .donor-name-highlight {
-      background: #eef3fc;
-      padding: 6px 18px;
-      border-radius: 48px;
-      font-size: 1.3rem;
-      color: #004070;
-      font-weight: 800;
-      display: inline-block;
-      margin: 10px 0 6px;
-    }
-
-    .donation-note {
-      background: #fef1df;
-      padding: 18px 22px;
-      border-radius: 30px;
-      margin-top: 20px;
-      font-size: 1.05rem;
-      line-height: 1.55;
-      color: #6a3e03;
-      border-right: 5px solid #dba13a;
-      font-weight: 500;
-      box-shadow: inset 0 1px 3px #0001, 0 3px 8px rgba(0,0,0,0.02);
-    }
-
-    .no-result {
-      text-align: center;
-      padding: 28px 10px;
-      color: #b1622c;
-      font-size: 1.2rem;
-      font-weight: 500;
-    }
-
-    .default-message {
-      color: #8b7a64;
-      font-size: 1.04rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    /* فوتر مع دعاء */
-    .footer-bless {
-      background: #0b2b3b;
-      color: #eedbba;
-      text-align: center;
-      padding: 22px 16px;
-      font-size: 1rem;
-      border-top: 1px solid #e4b36360;
-      letter-spacing: 0.5px;
-      font-weight: 500;
-    }
-
-    .small-count {
-      background: #e8b86b20;
-      border-radius: 30px;
-      padding: 8px 14px;
-      font-size: 0.85rem;
-      color: #cca15c;
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    @media (max-width: 680px) {
-      .hero-section h1 {
-        font-size: 1.7rem;
-      }
-      .main-content {
-        padding: 24px 20px;
-      }
-      .input-group {
-        flex-direction: column;
-      }
-      .input-group button {
-        padding: 14px;
-        justify-content: center;
-      }
-      .result-title {
-        font-size: 1.3rem;
-      }
-    }
-  </style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 10px;
+        }
+    </style>
 </head>
-<body>
+<body class="py-8 px-4">
 
-<div class="emergency-card">
-  <div class="hero-section">
-    <h1>🏥 صندوق مساعدة الحالات الطارئة</h1>
-    <p>معاً نُطفئ النار، ونُعيد البسمة للأسر المتضررة</p>
-    <div class="total-stats">
-      📋 إجمالي المتبرعين المسجلين: <span id="totalDonorsCount">0</span>
-    </div>
-  </div>
-
-  <div class="main-content">
-    <div class="search-shamsiya">
-      <label> 🔍 البحث باسم المتبرع أو المحسن</label>
-      <div class="input-group">
-        <input type="text" id="searchNameInput" placeholder="مثال: مصطفى الشجاع  أو  نضال الغزالي ..." autocomplete="off">
-        <button id="searchBtn"> ✨ بحث ✨</button>
-      </div>
-    </div>
-
-    <div class="result-card" id="resultCard">
-      <div class="result-title">
-        📌 نتيجة التبرع
-      </div>
-      <div id="dynamicResultArea">
-        <div class="default-message">
-          🌙 أدخل اسم المتبرع لتظهر مساهمته العظيمة 🌙
+<div class="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+    <!-- Header -->
+    <div class="sticky-header border-b border-gray-100 p-6 text-center">
+        <h1 class="text-2xl md:text-3xl font-bold text-blue-900">قانون صندوق مساعدة الحالات المرضية</h1>
+        <p class="text-blue-600 font-medium mt-1">قرية محبران - ميثاق الالتزام والتكافل</p>
+        
+        <div class="mt-4 bg-blue-50 rounded-full h-2 w-full max-w-md mx-auto overflow-hidden">
+            <div id="progressBar" class="bg-blue-600 h-full w-0 transition-all duration-500"></div>
         </div>
-      </div>
+        <p id="progressText" class="text-xs text-gray-500 mt-2">يرجى الموافقة على جميع البنود (0/20)</p>
     </div>
-    <div class="small-count">
-      💎 أكثر من 70 متبرعًا سجلوا عطاءهم | كل التبرعات موثقة تقديراً للخير
-    </div>
-  </div>
 
-  <div class="footer-bless">
-    اللهم اجعل ما قدموه نوراً في قبورهم وزيادة في ميزان حسناتهم 🤍🕊️
-  </div>
+    <!-- Law Sections -->
+    <div class="p-6 md:p-10 space-y-4 max-h-[60vh] overflow-y-auto" id="lawContainer">
+        
+        <!-- البند 1 -->
+        <div class="law-item p-4 rounded-xl border border-gray-100 bg-gray-50/50 flex gap-4">
+            <input type="checkbox" class="item-check custom-checkbox mt-1">
+            <div>
+                <h3 class="font-bold text-gray-800 mb-1">1. مبدأ التكافل والمشاركة المجتمعية</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">يقوم الصندوق على مبدأ التكافل الاجتماعي والتعاون بين أبناء القرية، وعلى جميع أبناء القرية المقتدرين المشاركة والمساهمة فيه بحسب القدرة والاستطاعة، حتى يكونوا ضمن برنامج الغرم المجتمعي؛ لأن من يدخل في الغرم يكون له حق في الغنم عند الحاجة. ويهدف هذا البند إلى ترسيخ مبدأ أن الحقوق مرتبطة بالواجبات، وأن المجتمع المتماسك هو الذي يحمل بعضه بعضًا وقت الشدائد.</p>
+            </div>
+        </div>
+
+        <!-- البند 2 -->
+        <div class="law-item p-4 rounded-xl border border-gray-100 bg-gray-50/50 flex gap-4">
+            <input type="checkbox" class="item-check custom-checkbox mt-1">
+            <div>
+                <h3 class="font-bold text-gray-800 mb-1">2. تنظيم التبرعات وتوثيقها ومنع التبرع المباشر</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">جميع التبرعات والمساهمات المالية الخاصة بالحالات المرضية أو الطارئة يجب أن تدخل عبر الصندوق فقط، وتوثق رسميًا وبشكل واضح، ولا يجوز لأي شخص تسليم أي مبلغ مباشرة للمريض أو أسرتة أو لأي جهة أخرى خارج إطار الصندوق. ويهدف هذا البند إلى ضبط الأموال، حفظ الحقوق، تحقيق الشفافية، ومنع الفوضى والعشوائية في الدعم.</p>
+            </div>
+        </div>
+
+        <!-- البند 3 -->
+        <div class="law-item p-4 rounded-xl border border-gray-100 bg-gray-50/50 flex gap-4">
+            <input type="checkbox" class="item-check custom-checkbox mt-1">
+            <div>
+                <h3 class="font-bold text-gray-800 mb-1">3. نطاق تغطية الصندوق وحدود مسؤوليته</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">يقتصر دعم الصندوق على تكاليف العلاج، والفحوصات، والعمليات، والأدوية الأساسية، والرقود بالمستشفى فقط، ولا يتحمل الصندوق أي تكاليف إضافية خارج هذا الإطار، إلا إذا استوجبت الضرورة القصوى ذلك، وبعد التصويت وموافقة نصف أعضاء اللجنة مع الإدارة. ويهدف هذا البند إلى ضبط المصروفات وحماية أموال الصندوق من التوسع غير المنظم.</p>
+            </div>
+        </div>
+
+        <!-- البند 4 -->
+        <div class="law-item p-4 rounded-xl border border-gray-100 bg-gray-50/50 flex gap-4">
+            <input type="checkbox" class="item-check custom-checkbox mt-1">
+            <div>
+                <h3 class="font-bold text-gray-800 mb-1">4. انتهاء مسؤولية الصندوق بعد الوفاة</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">تنتهي مسؤولية الصندوق فور وفاة الحالة بشكل كامل ونهائي، ولا يتحمل أي مصاريف لاحقة تتعلق بالدفن أو العزاء أو الالتزامات الأسرية أو أي مطالبات أخرى، إلا في حالات استثنائية جدًا وبعد تصويت رسمي وموافقة الإدارة واللجنة. ويهدف هذا البند إلى تحديد نهاية المسؤولية بوضوح ومنع فتح التزامات غير منضبطة.</p>
+            </div>
+        </div>
+
+        <!-- البند 5 -->
+        <div class="law-item p-4 rounded-xl border border-gray-100 bg-gray-50/50 flex gap-4">
+            <input type="checkbox" class="item-check custom-checkbox mt-1">
+            <div>
+                <h3 class="font-bold text-gray-800 mb-1">5. تنظيم الحالات البسيطة</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">الحالات التي تقل تكلفتها عن 200 ألف ريال يمني، إذا كانت الأسرة قادرة ومقتدرة ماليًا، لا يشملها دعم الصندوق. ويهدف هذا البند إلى توجيه موارد الصندوق للحالات الأشد احتياجًا والأكثر خطورة.</p>
+            </div>
+        </div>
+
+        <!-- البند 6 -->
+        <div class="law-item p-4 rounded-xl border border-gray-100 bg-gray-50/50 flex gap-4">
+            <input type="checkbox" class="item-check custom-checkbox mt-1">
+            <div>
+                <h3 class="font-bold text-gray-800 mb-1">6. التحقق الصارم من الحالات قبل الدعم</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">لا يتم اعتماد أي حالة أو صرف أي مبلغ إلا بعد التحقق الكامل والدقيق من صحة الحالة واحتياجها الفعلي والتأكد من عدم وجود مصادر دعم أخرى تغطي احتياجها. ويهدف هذا البند إلى حماية أموال الصندوق وضمان وصول الدعم لمستحقيه فقط.</p>
+            </div>
+        </div>
+
+        <!-- البند 7 -->
+        <div class="law-item p-4 rounded-xl border border-gray-100 bg-gray-50/50 flex gap-4">
+            <input type="checkbox" class="item-check custom-checkbox mt-1">
+            <div>
+                <h3 class="font-bold text-gray-800 mb-1">7. القيادة التنفيذية والصلاحيات المخولة</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">يتولى إدارة الصندوق والإشراف المباشر على جميع أعماله كلٌ من: <strong>مصطفى الشجاع، أحمد بن أحمد الشجاع، نبيل الشجاع، ومحمد بن محمد الشجاع</strong>، وهم المخولون رسميًا باتخاذ ومتابعة جميع القرارات والإجراءات المتعلقة بالصندوق والحالات المرضية، بما يشمل استقبال الحالات، التحقق منها، تقييمها، التنسيق مع المستشفيات، اعتماد الدعم العاجل، متابعة العلاج، وتنفيذ قرارات الصندوق.</p>
+            </div>
+        </div>
+
+        <!-- البند 8 - طويل ومفصل -->
+        <div class="law-item p-4 rounded-xl border border-gray-100 bg-gray-50/50 flex gap-4">
+            <input type="checkbox" class="item-check custom-checkbox mt-1">
+            <div class="text-sm">
+                <h3 class="font-bold text-gray-800 mb-2">8. نظام دعم الحالات الطارئة وضوابط الصرف المالية</h3>
+                <div class="space-y-3 text-gray-600">
+                    <p><strong>أولاً: نطاق الدعم:</strong> يشمل العلاج، العمليات، الفحوصات، الأدوية، والرقود. ولا يشمل تعويض الممتلكات أو الديون الشخصية أو مصاريف العزاء.</p>
+                    <p><strong>ثانياً: نسبة المساهمة:</strong> 50% للحالات المرضية، و30% للحوادث العرضية كحد أقصى.</p>
+                    <p><strong>ثالثاً: سقف الدعم:</strong> الحد الأعلى هو 2,000,000 ريال يمني للحالة الواحدة.</p>
+                    <p><strong>رابعاً: تصنيف التكلفة:</strong> أقل من 300 ألف يغطيها الصندوق بالكامل، أكثر من 500 ألف يفتح باب التبرع للمجتمع.</p>
+                    <p><strong>خامساً وسادساً: الشروط والمنع:</strong> يلزم تقرير طبي رسمي، ويحرم من الدعم كل من يثبت كذبه أو تلاعبه أو إخفاءه لمصادر دعم أخرى.</p>
+                    <p><strong>سابعاً وثامناً: الأولوية والحماية:</strong> الأولوية للحالات الخطيرة، ولا صرف بالعاطفة أو القرابة أو الضغط القبلي.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- الباقي من 9 إلى 20 -->
+        <script>
+            const extraItems = [
+                { t: "9. الشورى والتصويت", c: "جميع القرارات المصيرية أو الحالات الكبيرة أو التعديلات الجوهرية تعتمد بالشورى والتصويت، ويكون قرار الأغلبية ملزمًا للجميع." },
+                { t: "10. سرية المجموعة وحماية خصوصية العمل", c: "يُمنع منعًا باتًا إخراج أي أسرار من المجموعة، سواء كانت قرارات، تصويتات، حالات مرضية، أو أي أمور داخلية. أي إخلال بهذا البند يعتبر خيانة للأمانة." },
+                { t: "11. منع الشقاق وإثارة الفتن", c: "يُمنع منعًا باتًا نقل الأخبار أو إثارة الخلافات أو شق الصف. يحق للرئيس إقالة أي عضو يثبت تسببه بشرخ داخل الصف." },
+                { t: "12. أخلاقيات وسلوك أعضاء اللجنة", c: "الالتزام بالعقل والحكمة والهدوء وضبط النفس، وأن يكون هدف النقاش إيجاد الحلول لا صناعة المشاكل." },
+                { t: "13. الالتزام بالحضور والتفاعل الإداري", c: "التغيب عن 3 تصويتات متتالية يؤدي للمساءلة ومن ثم الاستبدال لضمان فاعلية العمل." },
+                { t: "14. الإعفاء من العضوية والعقوبات", c: "يحق للإدارة إعفاء أي عضو يثبت عليه الإهمال أو التقصير أو كثرة الجدل الفارغ أو الإضرار بمصلحة الصندوق." },
+                { t: "15. الحرمان الكامل من الدعم", c: "أي شخص يطلب دعمًا ثم يتواصل مع الناس سرًا لجمع تبرعات دون علم الإدارة يحرم تمامًا من الدعم." },
+                { t: "16. أولوية الدعم وربط الحق بالواجب", c: "من لا يشارك في الصندوق أو لا يلتزم بواجباته المجتمعية لا يحق له المطالبة بالدعم إلا بقرار خاص." },
+                { t: "17. الشفافية المالية وسجل المشاركين", c: "يوجد رابط رسمي يظهر فيه جميع المشاركين ومبالغ مساهماتهم لتعزيز الثقة والشفافية." },
+                { t: "18. التزام أعضاء الإدارة واللجنة بالمساهمة", c: "أعضاء الإدارة هم القدوة الأولى في الالتزام بإنزال مساهماتهم في أسرع وقت." },
+                { t: "19. احترام القرار الجماعي", c: "بعد اتخاذ القرار، يلتزم الجميع باحترامه والعمل به وعدم إثارة الخلاف حوله أو تعطيله." },
+                { t: "20. المصلحة العامة فوق المصالح الشخصية", c: "مصلحة الصندوق والقرية فوق أي مصلحة شخصية أو خلاف فردي لضمان استمرار الخدمة للجميع." }
+            ];
+
+            const container = document.getElementById('lawContainer');
+            extraItems.forEach(item => {
+                const div = document.createElement('div');
+                div.className = "law-item p-4 rounded-xl border border-gray-100 bg-gray-50/50 flex gap-4";
+                div.innerHTML = `
+                    <input type="checkbox" class="item-check custom-checkbox mt-1">
+                    <div>
+                        <h3 class="font-bold text-gray-800 mb-1">${item.t}</h3>
+                        <p class="text-sm text-gray-600 leading-relaxed">${item.c}</p>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        </script>
+    </div>
+
+    <!-- Final Signing Section -->
+    <div class="p-6 md:p-10 bg-gray-50 border-t border-gray-100">
+        <div class="max-w-md mx-auto space-y-4">
+            <div class="space-y-2">
+                <label class="block text-sm font-bold text-gray-700">الاسم الكامل (التوقيع الإلكتروني ملزم):</label>
+                <input type="text" id="fullName" placeholder="أدخل اسمك كما هو في بطاقة الهوية..." 
+                    class="w-full px-5 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-600 focus:ring-0 outline-none transition-all text-lg">
+            </div>
+            
+            <button id="submitBtn" disabled class="w-full bg-gray-400 text-white font-bold py-4 rounded-2xl shadow-lg cursor-not-allowed transition-all flex items-center justify-center gap-3">
+                <span>يجب الموافقة على جميع البنود أولاً</span>
+                <div id="btnLoader" class="hidden w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            </button>
+            <p id="errorMsg" class="text-red-500 text-xs text-center font-medium hidden"></p>
+        </div>
+    </div>
 </div>
 
-<script>
-  // -------------------------------------------------------------
-  // بيانات المتبرعين (كاملة كما وردت مع كافة التفاصيل)
-  // -------------------------------------------------------------
-  const donors = [
-    { name: "مصطفى الشجاع", note: "تبرع بمبلغ 200 دولار ✅ + 36 ألف يمني لمدة 6 أشهر." },
-    { name: "أحمد بن أحمد الشجاع", note: "تبرع بمبلغ 200 دولار." },
-    { name: "نضال أحمد الشجاع", note: "تبرع بمبلغ 100 دولار." },
-    { name: "مفيد الغزالي", note: "تبرع بمبلغ 100 دولار." },
-    { name: "بدر الشجاع وإخوانه", note: "تبرع بمبلغ 75 دولار." },
-    { name: "محمد علي ناجي الشجاع", note: "تبرع بمبلغ 50 دولار ✅ مدفوع 6 أشهر." },
-    { name: "معاد الشجاع", note: "تبرع بمبلغ 50 دولار ✅ مدفوع 6 أشهر." },
-    { name: "رافع الشجاع", note: "تبرع بمبلغ 50 دولار ✅ مدفوع 6 أشهر." },
-    { name: "أشرف الشجاع", note: "تبرع بمبلغ 50 دولار ✅ مدفوع 6 أشهر." },
-    { name: "فاعلة خير", note: "تبرعت بمبلغ 50 دولار ✅ مدفوع 6 أشهر." },
-    { name: "نبيل الشجاع", note: "تبرع بمبلغ 50 دولار." },
-    { name: "علي عبده مسعد", note: "تبرع بمبلغ 50 دولار." },
-    { name: "تمام علي الشجاع", note: "تبرع بمبلغ 50 دولار." },
-    { name: "زكريا حزام الشجاع", note: "تبرع بمبلغ 50 دولار." },
-    { name: "عبد الملك نبيل الشجاع", note: "تبرع بمبلغ 50 دولار." },
-    { name: "عزيز محمد عبد الله", note: "تبرع بمبلغ 25 دولار." },
-    { name: "عمار مطهر الشجاع", note: "تبرع بمبلغ 25 دولار." },
-    { name: "همدان أحمد الشجاع", note: "تبرع بمبلغ 25 دولار." },
-    { name: "مجيد علي ناجي الشجاع", note: "تبرع بمبلغ 25 دولار." },
-    { name: "عبد الوهاب أحمد الشجاع", note: "تبرع بمبلغ 25 دولار." },
-    { name: "الأمير مصطفى الشجاع", note: "تبرع بمبلغ 20 دولار ✅ مدفوع 6 أشهر." },
-    { name: "الأميرة مصطفى الشجاع", note: "تبرعت بمبلغ 20 دولار ✅ مدفوع 6 أشهر." },
-    { name: "السلطانة مصطفى الشجاع", note: "تبرعت بمبلغ 20 دولار ✅ مدفوع 6 أشهر." },
-    { name: "المصطفى مصطفى الشجاع", note: "تبرع بمبلغ 20 دولار ✅ مدفوع 6 أشهر." },
-    { name: "الخليفة مصطفى الشجاع", note: "تبرع بمبلغ 20 دولار ✅ مدفوع 6 أشهر." },
-    { name: "سامي خالد الشجاع", note: "تبرع بمبلغ 200 دولار سنوياً." },
-    { name: "محمد ناجي الشجاع", note: "تبرع بمبلغ 100 ريال سعودي ✅ مدفوع 6 أشهر." },
-    { name: "نايف الشجاع", note: "تبرع بمبلغ 50 ريال سعودي." },
-    { name: "ماجد الشجاع", note: "تبرع بمبلغ 50 ريال سعودي." },
-    { name: "عبدالعزيز عزيز الشجاع", note: "تبرع بمبلغ 50 ألف سنوياً." },
-    { name: "معمر علي بن علي", note: "تبرع بمبلغ 50 ريال سعودي." },
-    { name: "محمد السمه", note: "تبرع بمبلغ 50 ريال سعودي." },
-    { name: "طاهر خشخش", note: "تبرع بمبلغ 50 ريال سعودي." },
-    { name: "علي خشخش", note: "تبرع بمبلغ 50 ريال سعودي." },
-    { name: "غانم خشخش", note: "تبرع بمبلغ 50 ريال سعودي." },
-    { name: "محمد أحمد مسعد الشجاع", note: "تبرع بمبلغ 50 ريال سعودي." },
-    { name: "عمرو مسعد الشجاع", note: "تبرع بمبلغ 50 ريال سعودي." },
-    { name: "أحمد صالح خشخش", note: "تبرع بمبلغ 50 ريال سعودي." },
-    { name: "عمار محمد أحمد الشجاع", note: "تبرع بمبلغ 50 ريال سعودي." },
-    { name: "هارون محمد أحمد الشجاع", note: "تبرع بمبلغ 50 ريال سعودي إلى روح عمه عمر." },
-    { name: "نجم الدين علي الشجاع", note: "تبرع بمبلغ 50 ريال سعودي." },
-    { name: "عزيز ناجي الشجاع", note: "تبرع بمبلغ 25 ريال سعودي." },
-    { name: "عدنان صالح الشجاع", note: "تبرع بمبلغ 25 ريال سعودي." },
-    { name: "عبد ناجي الشجاع", note: "تبرع بمبلغ 25 ريال سعودي." },
-    { name: "فاعل خير عن أمه من طرف محمد ناجي", note: "تبرع بمبلغ 25 ريال سعودي، رحمها الله." },
-    { name: "محمد عبد ناجي الشجاع", note: "تبرع بمبلغ 25 ريال سعودي." },
-    { name: "إلى روح عمر أحمد خشخش", note: "تبرع بمبلغ 300 ريال سعودي سنوياً ✅ مدفوع 6 أشهر." },
-    { name: "محمد ناجي الشجاع - روح والدته مسعدة", note: "تبرع بمبلغ 300 ريال سعودي سنوياً ✅ مدفوع 6 أشهر." },
-    { name: "معاذ محمد عبد الشجاع", note: "تبرع بمبلغ 300 ريال سعودي سنوياً." },
-    { name: "شايف محمد عبده الشجاع", note: "تبرع بمبلغ 50 ريال سعودي شهرياً." },
-    { name: "عبد المجيد ناجي الشجاع", note: "تبرع بمبلغ 300 ريال سعودي سنوياً." },
-    { name: "خالد علي خشخش", note: "تبرع بمبلغ 500 ريال سعودي سنوياً." },
-    { name: "الدكتور محمد الشجاع", note: "تبرع بمبلغ 120 ألف يمني سنوياً ✅ مدفوع 115 دولار لمدة 6 أشهر." },
-    { name: "مهيوب محمد عبدالله الشجاع", note: "تبرع بمبلغ 120 ألف يمني سنوياً." },
-    { name: "خالد الشجاع", note: "تبرع بمبلغ 60 ألف يمني سنوياً." },
-    { name: "فيصل الشجاع", note: "تبرع بمبلغ 60 ألف يمني سنوياً." },
-    { name: "ياسر الشجاع", note: "تبرع بمبلغ 50 ألف يمني سنوياً." },
-    { name: "يوسف مهيوب", note: "تبرع بمبلغ 50 ألف يمني سنوياً." },
-    { name: "ناصر محمد صالح الشجاع", note: "تبرع بمبلغ 50 ألف يمني سنوياً." },
-    { name: "عبد الرحمن علي الشجاع", note: "تبرع بمبلغ 40 ألف يمني سنوياً." },
-    { name: "فايز أحمد العمامي", note: "تبرع بمبلغ 36 ألف يمني سنوياً." },
-    { name: "حميد عبد علي صالح", note: "تبرع بمبلغ 36 ألف يمني سنوياً." },
-    { name: "نعمان أحمد الغزالي", note: "تبرع بمبلغ 36 ألف يمني سنوياً." },
-    { name: "محمد عبد الغزالي", note: "تبرع بمبلغ 36 ألف يمني سنوياً." },
-    { name: "عز الدين عبد الغزالي", note: "تبرع بمبلغ 36 ألف يمني سنوياً." },
-    { name: "عارف عبدالله الحجواني", note: "تبرع بمبلغ 36 ألف يمني سنوياً." },
-    { name: "صديق صالح إسماعيل", note: "تبرع بمبلغ 36 ألف يمني سنوياً." },
-    { name: "عبد السلام الشجاع", note: "تبرع بمبلغ 36 ألف يمني سنوياً." },
-    { name: "أسعد علي ناجي الشجاع", note: "تبرع بمبلغ 10 آلاف يمني سنوياً." },
-    { name: "موسى علي الشجاع", note: "تبرع بمبلغ 5000 ريال يمني شهرياً." },
-    { name: "عبد اللطيف أحمد الشجاع", note: "تبرع بمبلغ 50 ألف يمني سنوياً." },
-    { name: "لطف عبد أحمد الشجاع", note: "تبرع بمبلغ 50 ألف يمني سنوياً." },
-    { name: "محمد حزام العمامي", note: "تبرع بمبلغ 50 ألف يمني سنوياً." },
-    { name: "علي محمد أحمد محسن", note: "تبرع بمبلغ 36 ألف يمني سنوياً." }
-  ];
+<!-- Firebase Logic -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-  // تحديث عدد المتبرعين في الهيدر
-  function updateTotalDonors() {
-    const totalSpan = document.getElementById("totalDonorsCount");
-    if (totalSpan) totalSpan.innerText = donors.length;
-  }
+    const firebaseConfig = JSON.parse(__firebase_config);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'mahbran-fund-app';
 
-  // دالة البحث الذكية: بحث غير حساس لحالة الأحرف، وتطابق للاسم بتضمن (includes)
-  function searchDonorByName(searchTerm) {
-    if (!searchTerm || searchTerm.trim() === "") return null;
-    const term = searchTerm.trim().toLowerCase();
-    // البحث عن أول متبرع يحتوي الاسم على النص المدخل (مرن)
-    return donors.find(donor => donor.name.toLowerCase().includes(term));
-  }
+    let currentUser = null;
+    const checks = document.querySelectorAll('.item-check');
+    const submitBtn = document.getElementById('submitBtn');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const fullNameInput = document.getElementById('fullName');
+    const errorMsg = document.getElementById('errorMsg');
 
-  // دالة عرض النتيجة بشكل جذاب وأنيق
-  function renderSearchResult(searchTerm) {
-    const resultArea = document.getElementById("dynamicResultArea");
-    if (!resultArea) return;
+    // Initialize Auth
+    const initAuth = async () => {
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+            await signInAnonymously(auth);
+        }
+    };
+    initAuth();
 
-    if (!searchTerm || searchTerm.trim() === "") {
-      resultArea.innerHTML = `
-        <div class="default-message">
-          🌙 أدخل اسم المتبرع لتظهر مساهمته العظيمة 🌙<br>
-          <span style="font-size:0.85rem; margin-top:10px;">مثال: مصطفى الشجاع ، نضال أحمد الشجاع ، فاعلة خير</span>
-        </div>
-      `;
-      return;
+    onAuthStateChanged(auth, (user) => { currentUser = user; });
+
+    // Progress Logic
+    function updateProgress() {
+        const checkedCount = Array.from(checks).filter(c => c.checked).length;
+        const total = checks.length;
+        const percent = (checkedCount / total) * 100;
+        
+        progressBar.style.width = `${percent}%`;
+        progressText.textContent = `تمت الموافقة على (${checkedCount}/${total}) بنداً`;
+
+        if (checkedCount === total) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+            submitBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+            submitBtn.querySelector('span').textContent = "أوافق وأوقع على هذا القانون";
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('bg-gray-400', 'cursor-not-allowed');
+            submitBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            submitBtn.querySelector('span').textContent = "يجب الموافقة على جميع البنود أولاً";
+        }
     }
 
-    const matchedDonor = searchDonorByName(searchTerm);
-    if (matchedDonor) {
-      resultArea.innerHTML = `
-        <div style="margin-bottom: 12px;">
-          <span class="donor-name-highlight">✨ ${matchedDonor.name} ✨</span>
-        </div>
-        <div class="donation-note">
-          🎁 <strong>تفاصيل العطاء:</strong><br>
-          ${matchedDonor.note}
-        </div>
-        <div style="margin-top: 20px; font-size:0.9rem; color:#b97f2e; border-top:1px dashed #eedbaa; padding-top:12px;">
-          🤲 جزاهم الله عن المحتاجين خير الجزاء
-        </div>
-      `;
-    } else {
-      resultArea.innerHTML = `
-        <div class="no-result">
-          😔 لا يوجد متبرع بهذا الاسم: "<strong>${escapeHtml(searchTerm.trim())}</strong>"<br>
-          <span style="font-size:0.9rem;">تأكد من الاسم أو ابحث باسم آخر من قائمة العطاء.</span>
-          <div style="margin-top: 18px; background:#fff1e0; border-radius:28px; padding:10px; font-size:0.85rem;">
-            💡 أسماء مميزة: مصطفى الشجاع ، نضال أحمد الشجاع ، فاعلة خير ، الدكتور محمد الشجاع
-          </div>
-        </div>
-      `;
-    }
-  }
-
-  // دالة بسيطة لتجنب XSS
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
+    checks.forEach(check => {
+        check.addEventListener('change', () => {
+            const parent = check.closest('.law-item');
+            if(check.checked) parent.classList.add('active');
+            else parent.classList.remove('active');
+            updateProgress();
+        });
     });
-  }
 
-  // معالج البحث من الزر
-  function performSearch() {
-    const inputElement = document.getElementById("searchNameInput");
-    const query = inputElement.value;
-    renderSearchResult(query);
-  }
+    // Submit Logic
+    submitBtn.addEventListener('click', async () => {
+        const name = fullNameInput.value.trim();
+        if (name.length < 8) {
+            errorMsg.textContent = "يرجى إدخال اسمك الكامل (ثلاثي على الأقل) للتوثيق.";
+            errorMsg.classList.remove('hidden');
+            return;
+        }
 
-  // البحث الفوري عند الضغط على Enter
-  function handleKeyPress(event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      performSearch();
-    }
-  }
+        if (!currentUser) return;
 
-  // إضافة بعض التألق: عند تحميل الصفحة نعرض إحصائيات ونتيجة ترحيبية
-  function initSite() {
-    updateTotalDonors();
-    // ربط الأحداث
-    const searchBtn = document.getElementById("searchBtn");
-    const searchInput = document.getElementById("searchNameInput");
-    if (searchBtn) searchBtn.addEventListener("click", performSearch);
-    if (searchInput) searchInput.addEventListener("keypress", handleKeyPress);
+        submitBtn.disabled = true;
+        document.getElementById('btnLoader').classList.remove('hidden');
+        errorMsg.classList.add('hidden');
 
-    // عرض إكرامي أولي (رسالة ترحيب)
-    const resultArea = document.getElementById("dynamicResultArea");
-    if (resultArea) {
-      resultArea.innerHTML = `
-        <div class="default-message">
-          🤍 أكثر من ${donors.length} متبرع كريم سجلوا عطاءهم ..<br>
-          ابحث عن اسمك أو اسم من تحب لترى عظيم أثره.
-        </div>
-      `;
-    }
-  }
+        try {
+            const docRef = collection(db, 'artifacts', appId, 'public', 'data', 'fund_signatures');
+            await addDoc(docRef, {
+                fullName: name,
+                uid: currentUser.uid,
+                lawVersion: '2.0',
+                agreementDate: serverTimestamp(),
+                approvedItemsCount: checks.length
+            });
 
-  // بدء تشغيل الموقع بعد تحميل DOM
-  document.addEventListener("DOMContentLoaded", initSite);
+            // Success UI
+            document.body.innerHTML = `
+                <div class="max-w-md mx-auto mt-20 p-10 bg-white rounded-3xl shadow-2xl text-center space-y-6">
+                    <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto">
+                        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">تم التوقيع بنجاح</h2>
+                    <p class="text-gray-600">شكراً لك يا <strong>${name}</strong>. تم تسجيل موافقتك على قانون صندوق محبران في السجلات السحابية الرسمية.</p>
+                    <button onclick="window.location.reload()" class="text-blue-600 font-bold hover:underline">العودة للرئيسية</button>
+                </div>
+            `;
+        } catch (e) {
+            console.error(e);
+            errorMsg.textContent = "حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى.";
+            errorMsg.classList.remove('hidden');
+            submitBtn.disabled = false;
+            document.getElementById('btnLoader').classList.add('hidden');
+        }
+    });
 </script>
+
 </body>
 </html>
